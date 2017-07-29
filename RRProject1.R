@@ -1,17 +1,4 @@
----
-title: "RRproject1"
-author: "John Fields"
-date: "July 29, 2017"
-output: html_document
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-Read Data and Develop Histogram of Daily steps
-
-```{r}
 
 Ractivity <- read.csv("activity.csv")
 
@@ -28,15 +15,12 @@ text(mean(dailySteps),25,labels="mean", pos=4, col="blue")              # label 
 text(mean(dailySteps),23,labels="median", pos=4, col="red")             # label the median
 
 rug(dailySteps, col="green") 
-```
 
-The mean is 'mean(dailysteps)'
-The median is 'median(dailysteps)'
-The sum is 'sum(dailysteps)'
 
-Create a Time Series Chart
+# The mean is 'mean(dailysteps)'
+# The median is 'median(dailysteps)'
+# The sum is 'sum(dailysteps)'
 
-```{r}
 splitMI <- split(Rsteps,Rsteps$interval, drop=TRUE)                     # split the complete cases by date  
 intervalAvg <- sapply(splitMI, function(x) mean(x$steps))               # vector of Avg. steps per interval  
 plot(intervalAvg, type="l",  
@@ -46,29 +30,22 @@ plot(intervalAvg, type="l",
 abline(v=which.max(intervalAvg), lty=3, col="red")                      # draw a red line thru the median  
 text(which.max(intervalAvg),max(intervalAvg),  
      labels=paste("max = ",as.character(round(max(intervalAvg)))), 
-     pos=4, col="black")
-```
+     pos=4, col="black")     
 
-```{r}
+
 splitmax <- names(which.max(intervalAvg))
 splitavg <- round(max(intervalAvg))
 splitname <- which.max(intervalAvg)
-```
-The name index where the max number of step taken is `r splitname`
-The max number of steps is `r splitavg`
 
-```{r}
+# The name index where the max number of step taken is `splitname, echo = FALSE`
+# The max number of steps is `splitavg, echo = FALSE`
+
 dataNA <- sum(is.na(Ractivity$steps))
-```
+#The number of missing values is `dataNA, echo = FALSE`
 
-The number of missing values is `r dataNA`
-
-```{r}
 data1 <- sum(!is.na(Ractivity$steps))
-```
-The number of values is `r data1`
+#The number of values is `data1, echo = FALSE`
 
-```{r}
 five_avg <- rep(intervalAvg, 61)
 data2 <- Ractivity
 
@@ -87,26 +64,17 @@ for (i in 1:61){                                #the total number of days in Oct
         temp<-data2[start:last,1]               #extracting all 5-minute steps for each day
         daily1<-c(daily1,sum(temp))             #concatenating the daily totals 
 }
-```
-Devolop the New Histogram with the NA values imputed
 
-```{r}
 hist(daily1, main="Total Steps per Day with NA Imputed", xlab="# Steps", 
      col="gray", labels = TRUE)                                                     # plot a histogram and lable values
 abline(v=mean(daily1), lty=5, col="blue")                                           # draw a blue line thru the mean  
 abline(v=median(daily1), lty=6, col="red")                                          # draw a red line thru the median  
 text(mean(daily1),25,labels="mean", pos=4, col="blue")                              # label the mean  
 text(mean(daily1),23,labels="median", pos=4, col="red") 
-```
 
-Summarize the two datasets, 1 with NA values and the other with imputed values
-```{r}
 summary(dailySteps)
 summary(daily1)
-```
 
-Plot Weekday versus Weedend Steps Taken
-```{r}
 data2$date<-as.Date(data2$date)
 data2$day<-weekdays(data2$date)
 
@@ -129,7 +97,4 @@ plot(Ractivity$interval[1:288],weekday_steps_average, type="l",xlab='Intervals',
 
 plot(Ractivity$interval[1:288],weekend_steps_average, type="l", xlab='Intervals',ylab="number of steps",
      col='red',lwd=2,main="Weekend")
-```
-
-
 
